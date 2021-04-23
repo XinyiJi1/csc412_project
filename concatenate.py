@@ -55,8 +55,4 @@ if __name__ == '__main__':
     z_logits = enc(x)
     z = ((torch.argmax(z_logits, axis=1)).numpy())[0]
 
-    print(z)
-    print(len(z))
-    print(len(z[0]))
-
 
