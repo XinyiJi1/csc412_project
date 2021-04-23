@@ -15,6 +15,10 @@ from dall_e import map_pixels, unmap_pixels, load_model
 target_image_size = 256
 
 
+def open_image(file):
+    return PIL.Image.open(file)
+
+
 def download_image(url):
     resp = requests.get(url)
     resp.raise_for_status()
