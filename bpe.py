@@ -141,7 +141,7 @@ if __name__ == '__main__':
 
     print(sorted_tokens)
 
-    word_given = 'blueandredflowerwithgreenpetal</w>'
+    word_given = 'blue and red flower with blue petal.</w>'
     print('Tokenizing word: {}...'.format(word_given))
     if word_given in tokens_dict:
         print('Tokenization of the known word:')
