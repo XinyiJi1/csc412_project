@@ -1,7 +1,8 @@
 import os
 
 if __name__ == '__main__':
-    result = open('caption.txt', 'w')
+    caption = open('caption.txt', 'w')
+    image_to_caption = open('image_to_caption.txt', 'w')
 
     d = './caption/text_c10/'
     for file in os.listdir(d):
@@ -10,10 +11,16 @@ if __name__ == '__main__':
             for image_file in os.listdir(class_file):
                 if 'txt' in image_file:
                     complete_path = os.path.join(class_file, image_file)
+                    image_index = image_file[-9:-4]
                     image_txt = open(complete_path, 'r')
                     content = image_txt.readlines()
-                    for lines in content:
-                        fixed_line = (lines.replace(',', '')).replace('.', '')
-                        result.write(fixed_line)
+                    caption_list = []
+                    for line in content:
+                        if '{' in line or '[' in line or ']' in line:
+                            continue
+                        caption_list.append(line)
+                        caption.write(line)
+                    image_to_caption.write(str((image_index, caption_list)) + '\n')
                     image_txt.close()
-    result.close()
+    caption.close()
+    image_to_caption.close()
