@@ -47,23 +47,16 @@ if __name__ == '__main__':
 
     # dVae
     dev = torch.device('cpu')
-
     enc = load_model("https://cdn.openai.com/dall-e/encoder.pkl", dev)
-    dec = load_model("https://cdn.openai.com/dall-e/decoder.pkl", dev)
 
     x = preprocess(open_image('../UT/Course/Year 4/CSC412/Project/image/image_00001.jpg'))
     original_image = T.ToPILImage(mode='RGB')(x[0])
-    original_image.show()
-    # display_markdown('Original image:')
-    # display(original_image)
-
+    # original_image.show()
     z_logits = enc(x)
-    z = torch.argmax(z_logits, axis=1)
-    z = F.one_hot(z, num_classes=enc.vocab_size).permute(0, 3, 1, 2).float()
+    z = ((torch.argmax(z_logits, axis=1)).numpy())[0]
 
-    x_stats = dec(z).float()
-    x_rec = unmap_pixels(torch.sigmoid(x_stats[:, :3]))
-    x_rec = T.ToPILImage(mode='RGB')(x_rec[0])
-    x_rec.show()
-    # display_markdown('Reconstructed image:')
-    # display(x_rec)
+    print(z)
+    print(len(z))
+    print(len(z[0]))
+
+
