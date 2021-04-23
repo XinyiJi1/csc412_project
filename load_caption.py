@@ -13,8 +13,7 @@ if __name__ == '__main__':
                     image_txt = open(complete_path, 'r')
                     content = image_txt.readlines()
                     for lines in content:
-                        remove_comma = lines.replace(',', '')
-                        fixed_line = remove_comma.replace('.', '')
+                        fixed_line = (lines.replace(',', '')).replace('.', '')
                         result.write(fixed_line)
                     image_txt.close()
     result.close()
