@@ -1,5 +1,6 @@
 import re
 import collections
+import numpy as np
 
 
 def get_word(filename):
@@ -98,6 +99,14 @@ def tokenize_word(string, sorted_tokens, unknown_token='</u>'):
     return string_tokens
 
 
+def token_to_vector(list_tokens, word_tokens):
+    length = len(list_tokens)
+    vector = np.zeros(length)
+    for token in word_tokens:
+        vector[list_tokens.index(token)] += 1
+    return vector
+
+
 if __name__ == '__main__':
     # file = ["./training-test/test1.txt", "./training-test/test2.txt", "./training-test/test3.txt",
     #         "./training-test/test4.txt", "./training-test/test5.txt", "./training-test/test6.txt",
@@ -113,18 +122,18 @@ if __name__ == '__main__':
     print('Number of tokens: {}'.format(len(tokens_freq.keys())))
     print('==========')
 
-    num_merges = 1000
-    for i in range(num_merges):
+    token_limit = 256
+    while len(tokens_freq.keys()) < token_limit:
         pairs = get_stats(word_dict)
         if not pairs:
             break
         best = max(pairs, key=pairs.get)
         word_dict = merge_word(best, word_dict)
-        print('Iter: {}'.format(i))
+        # print('Iter: {}'.format(i))
         # print('Best pair: {}'.format(best))
         tokens_freq, tokens_dict = word_to_token(word_dict)
-        # print('All tokens: {}'.format(tokens_freq.keys()))
-        # print('Number of tokens: {}'.format(len(tokens_freq.keys())))
+        print('All tokens: {}'.format(tokens_freq.keys()))
+        print('Number of tokens: {}'.format(len(tokens_freq.keys())))
         print('==========')
 
     sorted_tokens_tuple = sorted(tokens_freq.items(), key=lambda item: (token_len(item[0]), item[1]), reverse=True)
@@ -141,5 +150,7 @@ if __name__ == '__main__':
         print(tokenize_word(string=word_given, sorted_tokens=sorted_tokens, unknown_token='</u>'))
     else:
         print('Tokenizating of the unknown word:')
-        print(tokenize_word(string=word_given, sorted_tokens=sorted_tokens, unknown_token='</u>'))
+        result_tokens = tokenize_word(string=word_given, sorted_tokens=sorted_tokens, unknown_token='</u>')
+        print(result_tokens)
+        print(token_to_vector(sorted_tokens, result_tokens))
 
