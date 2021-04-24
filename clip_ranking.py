@@ -8,28 +8,24 @@ class CLIP:
     A text-label ranking system using CLIP developed by Open.ai.
     For paper please check: https://arxiv.org/pdf/2103.00020.pdf
     For official codebase please check: https://github.com/openai/CLIP
-
-    To initialize:
-    labels - The list containing all potential labels for CLIP to rank.
     """
-    def __init__(self, labels):
-        self.labels = labels
+    def __init__(self):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model, self.preprocess = clip.load("ViT-B/32", device=self.device)
-        self.text_token = clip.tokenize(labels).to(self.device)
-        self.text_features = self.model.encode_text(self.text_token)
 
-    def get_label_for_image(self, img):
+    def get_score(self, img, label):
         """
-        Returns the text label for img with the highest ranking.
+        Return the score of the image corresponding to label according to the
+        pretrained CLIP model. 
         """
         image = self.preprocess(img).unsqueeze(0).to(self.device)
+        text = clip.tokenize([label]).to(self.device)
 
         with torch.no_grad():
             image_features = self.model.encode_image(image)
+            text_features = self.model.encode_text(text)
 
-            logits_per_image, logits_per_text = self.model(image, self.text_token)
+            logits_per_image, logits_per_text = self.model(image, text)
             probs = logits_per_image.softmax(dim=-1).cpu().numpy()
 
-        max_index = np.argmax(probs)
-        return self.labels[max_index]
+        return logits_per_image.cpu().numpy()[0, 0]
