@@ -14,13 +14,13 @@ if __name__ == '__main__':
                     image_index = image_file[-9:-4]
                     image_txt = open(complete_path, 'r')
                     content = image_txt.readlines()
-                    caption_list = []
+                    caption_string = ''
                     for line in content:
                         if '{' in line or '[' in line or ']' in line:
                             continue
-                        caption_list.append(line)
+                        caption_string += line
                         caption.write(line)
-                    image_to_caption.write(str((image_index, caption_list)) + '\n')
+                    image_to_caption.write(str((image_index, caption_string)) + '\n')
                     image_txt.close()
     caption.close()
     image_to_caption.close()
