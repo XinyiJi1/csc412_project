@@ -70,7 +70,7 @@ def token_len(token):
 
 
 def tokenize_word(string, sorted_tokens, unknown_token='</u>'):
-    if string == '':
+    if string == '' or string == ' ':
         return []
     if not sorted_tokens:
         return [unknown_token]
@@ -141,7 +141,7 @@ if __name__ == '__main__':
 
     print(sorted_tokens)
 
-    word_given = 'blue and red flower with blue petal.</w>'
+    word_given = '% o'
     print('Tokenizing word: {}...'.format(word_given))
     if word_given in tokens_dict:
         print('Tokenization of the known word:')
