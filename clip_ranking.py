@@ -73,3 +73,15 @@ class CLIP:
                     best_samples = best_samples[:idx] + [i] + best_samples[idx: num_sample - 1]
 
         return best_samples
+
+
+if __name__ == '__main__':
+    # A example of CLIP in real practice
+    clip_model = CLIP()
+    img = Image.open('./image_00103.png')
+
+    clip_model.get_score(img, 'A flower')
+    clip_model.get_score(img, 'A flower with green leaves')
+    clip_model.get_score(img, 'A flower with green leaves in front of blue background')
+    clip_model.get_score(img, 'A blue, white and purple flower with green leaves in front of blue background')
+    clip_model.get_score(img, 'University of Toronto')
