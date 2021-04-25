@@ -59,7 +59,7 @@ class CLIP:
         best_scores = [0] * num_sample
 
         for i in range(len(labels)):
-            score = self.get_score(Image.open('./102flowers/image_{:05d}.jpg'.format(i)), labels[i])
+            score = self.get_score(Image.open('./102flowers/image_{:05d}.jpg'.format(i+1)), labels[i])
             if i == 0:
                 best_samples[0] = 0
                 best_scores[0] = score
